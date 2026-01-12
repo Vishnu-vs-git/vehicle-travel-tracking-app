@@ -1,6 +1,15 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
-
+export interface IGpsDocument {
+  tripeId : Types.ObjectId;
+  latitude : number;
+  longitude : number;
+  timeStamp : number;
+  ignition : number;
+  speed: number;
+  updatedAt?: Date;
+  createdAt?: Date
+}
 
 export const GpsSchema  = new mongoose.Schema({
   tripId : {
@@ -23,4 +32,4 @@ export const GpsSchema  = new mongoose.Schema({
   }
 },{timestamps: true})
 
-export const GpsModel  = mongoose.model("Gps", GpsSchema);
+export const GpsModel  = mongoose.model<IGpsDocument>("Gps", GpsSchema);
