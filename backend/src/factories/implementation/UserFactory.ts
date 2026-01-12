@@ -1,4 +1,4 @@
-import { UserDbModel } from "../../types/dbtypes";
+import { UserDbModel } from "../../types/dbTypes";
 import { User } from "../../types/userTypes";
 import { IUserFactory } from "../interface/IUserFactory";
 

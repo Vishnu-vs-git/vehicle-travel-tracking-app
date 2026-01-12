@@ -2,9 +2,9 @@ export class User {
   name : string;
   email: string;
   password : string;
-  id? : string | undefined;
-  createdAt?: Date | undefined
-  updatedAt?: Date | undefined
+  id? : string;
+  createdAt?: Date;
+  updatedAt?: Date;
   
   constructor(props:{
     id?: string;
@@ -14,11 +14,11 @@ export class User {
     createdAt? : Date;
     updatedAt?: Date;
   }){
-    this.id = props.id;
+    if(props.id) this.id = props.id;
     this.name = props.name;
     this.email = props.email;
     this.password = props.password;
-    this.createdAt = props.createdAt;
-    this.updatedAt = props.updatedAt
+    if(props.createdAt) this.createdAt = props.createdAt;
+    if(props.updatedAt) this.updatedAt = props.updatedAt
   }
 }
