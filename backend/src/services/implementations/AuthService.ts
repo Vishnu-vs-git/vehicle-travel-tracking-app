@@ -26,7 +26,7 @@ export class AuthService implements IAuthService {
     if(!registeredUser)throw new CREATION_FAILED_ERROR(ERROR_MESSAGES.USER.REGISTER_FAILED);
      
   }
-  async login(email: string, password: string): Promise<{user:IUserResponseDTO, token : string}> {
+  async login(email: string, password: string): Promise<{user:IUserResponseDTO, token : string,refreshToken :string}> {
 
       const user = await this._userRepository.findByEmail(email);
       if(!user) throw new NOT_FOUND_ERROR(ERROR_MESSAGES.USER.NOT_FOUND);
@@ -37,11 +37,13 @@ export class AuthService implements IAuthService {
 
     
        const token = await JWTUtil.createAccessToken({userId: user.id});
+       const refreshToken = await JWTUtil.createRefreshToken({userId: user.id});
        const userData = this._userMapper.toResponseDTO(user);
    
     return {
        user:userData,
-       token 
+       token,
+       refreshToken 
     }
     
   }
