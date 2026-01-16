@@ -6,6 +6,8 @@ import { AuthMiddleware } from "../../middlewares/authMiddleware";
 import { AuthRequest } from "../../types/auth-request";
 const router = express.Router();
 router.post("/register",InputDataValidator.validate(userRegisterSchema),(req: Request, res: Response, next : NextFunction) => authController.register(req,res, next));
+router.post("/login",(req: Request, res: Response, next : NextFunction) => authController.login(req,res, next));
+router.post("/logout",AuthMiddleware.authenticate.bind(AuthMiddleware),(req: Request, res: Response, next : NextFunction) => authController.logout(req,res, next));
 router.get("/check-auth",AuthMiddleware.authenticate.bind(AuthMiddleware),(req: AuthRequest, res :Response,next:NextFunction) => {
    res.json({authenticated:true})
 })

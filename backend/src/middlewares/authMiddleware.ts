@@ -7,7 +7,7 @@ import { JwtPayload } from "../types/jwtTypes";
 export class AuthMiddleware {
   static authenticate(req: AuthRequest, res :Response, next:NextFunction) {
     try{
-     const token = req.cookies?.token;
+     const token = req.cookies?.accessToken;
      if(!token) throw new CustomError("UnAuthorized",401);
 
      const decoded = jwt.verify(

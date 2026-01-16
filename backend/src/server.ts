@@ -1,6 +1,7 @@
 import app from "./app"
+import { Database } from "./config/database";
 
- import { Database } from "./config/database.js"
+
 
 Database.connect();
 app.listen(7000,() => {

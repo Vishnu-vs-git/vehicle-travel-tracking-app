@@ -30,13 +30,14 @@ export class AuthService implements IAuthService {
 
       const user = await this._userRepository.findByEmail(email);
       if(!user) throw new NOT_FOUND_ERROR(ERROR_MESSAGES.USER.NOT_FOUND);
-
-       const match = await HashUtil.compare(password,user.password);
-       if(!match) throw new BAD_REQUEST_ERROR(ERROR_MESSAGES.USER.PASSWORD_NOT_MATCH);
-    
-
-    
-       const token = await JWTUtil.createAccessToken({userId: user.id});
+      
+      const match = await HashUtil.compare(password,user.password);
+      if(!match) throw new BAD_REQUEST_ERROR(ERROR_MESSAGES.USER.PASSWORD_NOT_MATCH);
+      
+      
+      
+      const token = await JWTUtil.createAccessToken({userId: user.id});
+      console.log("token is", token)
        const refreshToken = await JWTUtil.createRefreshToken({userId: user.id});
        const userData = this._userMapper.toResponseDTO(user);
    
