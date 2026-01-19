@@ -1,14 +1,18 @@
 import mongoose, { Types } from "mongoose";
 
 export interface IGpsDocument {
-  tripeId : Types.ObjectId;
+  tripId : Types.ObjectId;
   latitude : number;
   longitude : number;
-  timeStamp : number;
-  ignition : number;
+  timeStamp : Date;
+  ignition : boolean;
   speed: number;
   updatedAt?: Date;
-  createdAt?: Date
+  createdAt?: Date;
+isIdle: boolean,
+isStoppage: boolean,
+isOverSpeed: boolean
+
 }
 
 export const GpsSchema  = new mongoose.Schema({
@@ -23,6 +27,16 @@ export const GpsSchema  = new mongoose.Schema({
   },
   timeStamp :  {
     type : Date
+  },
+  isIdle :{
+    type : Boolean,
+    
+  },
+  isStoppage: {
+    type :Boolean
+  },
+  isOverSpeed : {
+     type :Boolean
   },
   ignition  : {
     type : Boolean
