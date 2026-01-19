@@ -1,11 +1,10 @@
 import axios from "axios";
 
 export const apiClient = axios.create({
-  baseURL: "http://localhost:7000/",
-  withCredentials: true // ⭐ VERY IMPORTANT
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true 
 });
 
-// response interceptor (optional global error handling)
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {

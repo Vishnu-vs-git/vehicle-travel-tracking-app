@@ -3,6 +3,7 @@ import Login from "./pages/Login"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Dashboard from "./pages/Dashboard"
 import Register from "./pages/Register"
+import TripDetails from "./pages/TripDetails"
 
 const App = () => {
   return (
@@ -14,6 +15,13 @@ const App = () => {
           element={
             <ProtectedRoute>
               <Dashboard/>
+            </ProtectedRoute>
+          }
+          />
+        <Route path="/trips/:tripId"
+          element={
+            <ProtectedRoute>
+              <TripDetails/>
             </ProtectedRoute>
           }
           />

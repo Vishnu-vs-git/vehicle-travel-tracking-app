@@ -6,10 +6,11 @@ export interface CsvGpsRow {
   longitude: number;
   timestamp: string;
   ignition: boolean;
+  tripId?:string
 }
 
 export class ParseCsv {
-  parse(path: string): Promise<CsvGpsRow[]> {
+  static parse(path: string): Promise<CsvGpsRow[]> {
     return new Promise((resolve, reject) => {
       const rows: CsvGpsRow[] = [];
 
@@ -20,7 +21,12 @@ export class ParseCsv {
             latitude: Number(data.latitude),
             longitude: Number(data.longitude),
             timestamp: data.timestamp,
-            ignition: data.ignition === "true",
+            ignition:
+              String(data.ignition).toLowerCase()=== "on" ||
+              String(data.ignition).toLowerCase() === "true" ||
+              String(data.ignition).toLowerCase() === "1",
+           
+
           });
         })
         .on("end", () => {

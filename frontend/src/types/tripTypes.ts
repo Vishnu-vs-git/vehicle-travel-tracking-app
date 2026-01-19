@@ -5,4 +5,8 @@ export interface Trip {
   totalDistance : number;
   idleTime :number;
   stoppageTime : number;
+  tripDuration : number;
+  name :string;
+  overSpeedTime: number;
+  overSpeedDistance : number;
 }

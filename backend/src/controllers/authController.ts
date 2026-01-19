@@ -6,7 +6,7 @@ import { SUCCESS_MESSAGES } from "../common/successMessages";
 import { CookieOptionsUtility } from "../utils/cookieOptionsUtility";
 import { COOKIE_NAMES } from "../enums/cookieTypes";
 import { AuthRequest } from "../types/auth-request";
-import { STATUS_CODES } from "node:http";
+
 
 
 export class AuthController {

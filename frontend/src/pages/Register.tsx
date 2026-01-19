@@ -50,7 +50,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-black px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-slate-800 to-black px-4">
 
       {/* Card */}
       <div className="w-full max-w-md bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/20">
@@ -137,7 +137,7 @@ const Register = () => {
           <button
             onClick={handleRegister}
             disabled={loading}
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-semibold hover:opacity-90 transition disabled:opacity-50"
+            className="w-full py-3 rounded-lg bg-linear-to-r from-cyan-400 to-blue-500 text-black font-semibold hover:opacity-90 transition disabled:opacity-50"
           >
             {loading ? "Creating account..." : "Create Account"}
           </button>

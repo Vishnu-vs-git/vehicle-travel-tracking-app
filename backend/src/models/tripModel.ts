@@ -1,14 +1,18 @@
 import mongoose, { Types } from "mongoose";
 
 export interface ITripDocument {
-  userId?: Types.ObjectId;
+  userId: Types.ObjectId;
   totalDistance : number;
   idleTime : number;
   stoppageTime : number;
-  startTime : number;
-  endTime : number;
+  startTime : Date;
+  endTime : Date;
   createdAt?: Date;
-  updatedAt?: Date
+  updatedAt?: Date;
+  tripDuration : number;
+  overSpeedTime: number;
+  name: string;
+  overSpeedDistance: number;
 }
 export const TripSchema = new mongoose.Schema({
   userId : {
@@ -22,6 +26,21 @@ export const TripSchema = new mongoose.Schema({
      type : Number,
      default : 0
   },
+  name:{
+     type : String
+  },
+  overSpeedDistance : {
+     type : Number,
+     default : 0
+  },
+  tripDuration :{
+     type : Number,
+     default:0
+  },
+  overSpeedTime : {
+    type : Number,
+    default: 0
+  },
   stoppageTime : {
      type : Number,
      default : 0
@@ -32,6 +51,6 @@ export const TripSchema = new mongoose.Schema({
   endTime : {
      type  :Date
   }
-})
+},{timestamps:true})
 
 export const TripModel  = mongoose.model<ITripDocument>("Trip",TripSchema);

@@ -1,5 +1,6 @@
 import {  useState } from "react";
 import type { ChangeEvent } from "react";
+import { TripService } from "../services/tripService";
 interface UploadSectionProps {
   onUploadSuccess: () => void;
 }
@@ -18,7 +19,7 @@ const UploadSection = ({ onUploadSuccess }: UploadSectionProps) => {
       setLoading(true);
 
       // 👉 Uncomment when backend is ready
-      // await TripService.uploadTrip(file);
+       await TripService.uploadTrip(file);
 
       onUploadSuccess();
     } finally {

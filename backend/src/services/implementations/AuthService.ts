@@ -37,7 +37,7 @@ export class AuthService implements IAuthService {
       
       
       const token = await JWTUtil.createAccessToken({userId: user.id});
-      console.log("token is", token)
+    
        const refreshToken = await JWTUtil.createRefreshToken({userId: user.id});
        const userData = this._userMapper.toResponseDTO(user);
    
