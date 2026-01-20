@@ -13,7 +13,7 @@
      "module": "commonjs",
       //  "moduleResolution": "NodeNext",
     "target": "esnext",
-    "types": ["node"],
+    "types": ["node","express"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
