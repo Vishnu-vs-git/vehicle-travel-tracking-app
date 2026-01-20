@@ -12,6 +12,22 @@ import { buildSegments } from "../../utils/buildSegments";
 import type { SegmentType } from "../../utils/buildSegments";
 import "leaflet/dist/leaflet.css";
 
+/* ======================================================
+   🔧 FIX LEAFLET DEFAULT MARKERS (REQUIRED FOR RENDER)
+====================================================== */
+delete (L.Icon.Default.prototype as { _getIconUrl?: unknown })._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  iconUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+});
+
+/* ======================================================
+   TYPES
+====================================================== */
 interface TripWithPoints {
   tripId: string;
   points: GpsPoint[];
@@ -21,13 +37,19 @@ interface Props {
   trips: TripWithPoints[];
 }
 
+/* ======================================================
+   COLORS
+====================================================== */
 const colors: Record<SegmentType, string> = {
-  normal: "#2563eb",    // blue
-  idle: "#f59e0b",      // orange
-  overspeed: "#22c55e", // green
-  stopped: "#ef4444",   // red
+  normal: "#2563eb",     // blue
+  idle: "#f59e0b",       // orange
+  overspeed: "#22c55e",  // green
+  stopped: "#ef4444",    // red (marker only)
 };
 
+/* ======================================================
+   ICONS
+====================================================== */
 const icons = {
   stopped: new L.Icon({
     iconUrl: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
@@ -43,8 +65,11 @@ const icons = {
   }),
 };
 
+/* ======================================================
+   COMPONENT
+====================================================== */
 const TripMap = ({ trips }: Props) => {
-  if (!trips.length) return null;
+  if (!trips.length || !trips[0].points.length) return null;
 
   const firstTrip = trips[0];
   const center: [number, number] = [
@@ -58,15 +83,17 @@ const TripMap = ({ trips }: Props) => {
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
         {trips.map((trip, index) => {
+          if (!trip.points.length) return null;
+
           const segments = buildSegments(trip.points);
           const start = trip.points[0];
           const end = trip.points[trip.points.length - 1];
 
           return (
             <div key={trip.tripId}>
-              {/* POLYLINES (NO STOPPED) */}
+              {/* ================= ROUTE (NO STOPPED LINE) ================= */}
               {segments
-                .filter(s => s.type !== "stopped")
+                .filter((s) => s.type !== "stopped")
                 .map((s, i) => (
                   <Polyline
                     key={`${trip.tripId}-line-${i}`}
@@ -78,19 +105,19 @@ const TripMap = ({ trips }: Props) => {
                   />
                 ))}
 
-              {/* START */}
+              {/* ================= START ================= */}
               <Marker position={[start.latitude, start.longitude]}>
                 <Popup>🚀 Trip {index + 1} Start</Popup>
               </Marker>
 
-              {/* END */}
+              {/* ================= END ================= */}
               <Marker position={[end.latitude, end.longitude]}>
                 <Popup>🏁 Trip {index + 1} End</Popup>
               </Marker>
 
-              {/* STOPPED MARKERS */}
+              {/* ================= STOPPED (MARKER ONLY) ================= */}
               {segments
-                .filter(s => s.type === "stopped")
+                .filter((s) => s.type === "stopped")
                 .map((s, i) => {
                   const [lat, lng] = s.points[0];
                   return (
@@ -104,9 +131,9 @@ const TripMap = ({ trips }: Props) => {
                   );
                 })}
 
-              {/* IDLE MARKERS */}
+              {/* ================= IDLE ================= */}
               {segments
-                .filter(s => s.type === "idle")
+                .filter((s) => s.type === "idle")
                 .map((s, i) => {
                   const [lat, lng] = s.points[0];
                   return (
@@ -120,9 +147,9 @@ const TripMap = ({ trips }: Props) => {
                   );
                 })}
 
-              {/* OVERSPEED MARKERS */}
+              {/* ================= OVERSPEED ================= */}
               {segments
-                .filter(s => s.type === "overspeed")
+                .filter((s) => s.type === "overspeed")
                 .map((s, i) => {
                   const [lat, lng] = s.points[0];
                   return (
