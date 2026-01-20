@@ -1,5 +1,6 @@
 import { Request } from "express";
 
 export interface AuthRequest extends Request {
-  userId?:string
+  userId?:string;
+  file?: Express.Multer.File;
 }
