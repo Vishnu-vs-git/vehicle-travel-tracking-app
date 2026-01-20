@@ -15,13 +15,14 @@ export class TripController {
   ){}
   async uploadTrip(req: AuthRequest, res: Response,next: NextFunction): Promise<void> {
     try {
-     
+      
       if (!req.file || !req.userId) {
         res.status(StatusCode.BAD_REQUEST).json(ApiResponse.error(ERROR_MESSAGES.USER.ID_REQUIRED));
         return
       }
+       const file = req.file as Express.Multer.File;
 
-      const trip = await this._tripService.uploadTrip(req.file?.path!, req.userId!);
+      const trip = await this._tripService.uploadTrip(file.path!, req.userId!);
       res.status(StatusCode.CREATED).json(ApiResponse.success(SUCCESS_MESSAGES.TRIP.UPLOAD_SUCCESS,trip));
     } catch (error) {
      next(error)
