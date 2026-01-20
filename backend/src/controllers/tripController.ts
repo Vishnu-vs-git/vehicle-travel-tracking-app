@@ -6,7 +6,7 @@ import { StatusCode } from "../common/statusCode";
 import { ERROR_MESSAGES } from "../common/errorMessages";
 import { SUCCESS_MESSAGES } from "../common/successMessages";
 import { CustomError } from "../common/customError";
-
+import "multer";
 
 
 export class TripController {
