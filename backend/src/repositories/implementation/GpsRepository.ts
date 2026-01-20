@@ -1,6 +1,6 @@
 import { IGpsFactory } from "../../factories/interface/IGpsFactory";
 import { GpsModel } from "../../models/gpsModel";
-import { GpsDbModel } from "../../types/dbTypes";
+import { GpsDbModel } from "../../types/dbtypes";
 import { Gps } from "../../types/gpsTypes";
 import { IGpsRepository } from "../interface/IGpsRepository";
 

@@ -1,6 +1,6 @@
 import { IUserFactory } from "../../factories/interface/IUserFactory";
 import { userModel } from "../../models/userModel";
-import { UserDbModel } from "../../types/dbTypes";
+import { UserDbModel } from "../../types/dbtypes";
 import { User } from "../../types/userTypes";
 import { IUserRepository } from "../interface/IUserRepository";
 

@@ -1,4 +1,4 @@
-import { GpsDbModel } from "../../types/dbTypes";
+import { GpsDbModel } from "../../types/dbtypes";
 import { Gps } from "../../types/gpsTypes";
 import { IGpsFactory } from "../interface/IGpsFactory";
 

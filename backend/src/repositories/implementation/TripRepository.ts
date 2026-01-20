@@ -2,7 +2,7 @@
 
 import { ITripFactory } from "../../factories/interface/ITripFactory";
 import { TripModel } from "../../models/tripModel";
-import { TripDbModel } from "../../types/dbTypes";
+import { TripDbModel } from "../../types/dbtypes";
 import { Trip } from "../../types/tripTypes";
 import { ITripRepository } from "../interface/ITripRepository";
 

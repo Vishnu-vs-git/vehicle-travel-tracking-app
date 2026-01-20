@@ -1,6 +1,6 @@
 
 
-import { TripDbModel } from "../../types/dbTypes";
+import { TripDbModel } from "../../types/dbtypes";
 import { Trip } from "../../types/tripTypes";
 import { ITripFactory } from "../interface/ITripFactory";
 
