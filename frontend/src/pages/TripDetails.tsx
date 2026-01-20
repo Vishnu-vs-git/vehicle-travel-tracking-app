@@ -28,7 +28,7 @@ const TripDetails = () => {
     const loadTrips = async () => {
       const res = await TripService.getTrips();
       const trips = res.data.data;
-
+       console.log("trips", trips)
       setAllTrips(trips);
       if (trips.length > 0) {
         setActiveTripId(trips[0].id);
