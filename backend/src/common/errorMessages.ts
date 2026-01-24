@@ -3,7 +3,7 @@ export const ERROR_MESSAGES = {
      REGISTER_FAILED : "User registration failed ",
      ALREADY_EXISTS : "User already exists",
      NOT_FOUND : "User not found",
-     PASSWORD_NOT_MATCH :"Invalid credentials",
+     PASSWORD_NOT_MATCH :"Invalid Password",
      ID_REQUIRED : "Id is required",
      FILE_REQUIRED: "File is required"
   },

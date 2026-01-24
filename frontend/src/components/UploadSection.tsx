@@ -1,6 +1,7 @@
 import {  useState } from "react";
 import type { ChangeEvent } from "react";
 import { TripService } from "../services/tripService";
+import Swal from "sweetalert2";
 interface UploadSectionProps {
   onUploadSuccess: () => void;
 }
@@ -20,7 +21,12 @@ const UploadSection = ({ onUploadSuccess }: UploadSectionProps) => {
 
       // 👉 Uncomment when backend is ready
        await TripService.uploadTrip(file);
-
+        Swal.fire({
+        title: 'Success!',
+        text:  ` Trip uploaded successfully.`,
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
       onUploadSuccess();
     } finally {
       setLoading(false);

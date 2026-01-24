@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { AuthService } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { AxiosError } from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,11 +14,24 @@ const Login = () => {
     try {
       setLoading(true);
       const res = await AuthService.login({ email, password });
-      console.log("res is", res);
+         Swal.fire({
+    title: 'Success!',
+    text: res.data.message||"User login  successful",
+    icon: 'success',  
+    confirmButtonText: 'OK'
+  });
+
+   
       
       navigate("/dashboard");
-    } catch {
-      alert("Invalid email or password");
+    } catch(err) {
+      console.log(err)
+       Swal.fire({
+      icon: "error",
+      title: "Login Failed",
+      text: err instanceof AxiosError?err.response?.data?.message : "Invalid email or password",
+      confirmButtonColor: "#06b6d4",
+    });
     } finally {
       setLoading(false);
     }
