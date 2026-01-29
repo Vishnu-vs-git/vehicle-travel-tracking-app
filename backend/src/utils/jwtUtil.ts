@@ -5,7 +5,7 @@ dotenv.config();
 export class JWTUtil {
   static async createAccessToken(payload :object)  {
          const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET as string;
-         console.log("secret ",accessTokenSecret)
+         
          return jwt.sign(payload,accessTokenSecret,{expiresIn: "1d"});
         }
   static async createRefreshToken(payload: object) {

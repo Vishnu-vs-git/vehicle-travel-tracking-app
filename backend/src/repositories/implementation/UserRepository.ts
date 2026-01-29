@@ -18,4 +18,8 @@ export class UserRepository implements IUserRepository {
      if (!userDb) return null;
      return this._userFactory.toDomain(userDb);
  }
+ async findById(userId:string): Promise<User>{
+    const userDoc = await userModel.findById(userId) as UserDbModel;
+  return this._userFactory.toDomain(userDoc);
+ }
 }

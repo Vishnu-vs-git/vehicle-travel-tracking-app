@@ -3,7 +3,7 @@
 
 
 import { ERROR_MESSAGES } from "../../common/errorMessages";
-import {  NOT_FOUND_ERROR } from "../../common/errors";
+import {  BAD_REQUEST_ERROR, NOT_FOUND_ERROR } from "../../common/errors";
 import { Trip } from "../../types/tripTypes";
 import { CsvGpsRow, ParseCsv } from "../../utils/csvParser";
 import { TripCalculator } from "../../utils/tripCalculator";
@@ -34,7 +34,9 @@ export class TripService implements ITripService {
    
     const csvRows: CsvGpsRow[] = await ParseCsv.parse(filePath);
    
-    
+     if(!csvRows.length) {
+       throw new BAD_REQUEST_ERROR(ERROR_MESSAGES.CSV.CSV_INVALID)
+     }
    
      
     const result = TripCalculator.calculate(csvRows);

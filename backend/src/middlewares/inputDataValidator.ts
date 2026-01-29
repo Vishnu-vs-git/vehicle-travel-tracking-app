@@ -8,10 +8,5 @@ export class InputDataValidator {
       next();
     };
   }
-  // static validateQuery(schema: ZodType): RequestHandler {
-  //   return (req: IAuthenticatedRequest, res: Response, next: NextFunction) => {
-  //     req.validatedQuery = schema.parse(req.query);
-  //     next();
-  //   };
-  // }
+ 
 }

@@ -1,23 +1,15 @@
-import { useEffect, useState, type JSX } from "react";
+import {   type JSX } from "react";
 import { Navigate } from "react-router-dom";
-import { AuthService } from "../services/authService";
+import { useAppSelector } from "../store/hooks";
 
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const [isAuth, setIsAuth] = useState<boolean | null>(null);
+  const isAuthenticated = useAppSelector(
+    (state) => state.auth.isAuthenticated
+  );
 
-  useEffect(() => {
-    AuthService.checkAuth().then((result) => {
-      console.log("Auth check result",result);
-      setIsAuth(result)
-    });
-  }, []);
-  if (isAuth === null) {
-    return <p>Loading...</p>;
-  }
-
-  if (!isAuth) {
-    return <Navigate to="/" />;
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
   }
 
   return children;

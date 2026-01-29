@@ -27,6 +27,12 @@ export class AuthService implements IAuthService {
      
   }
   async login(email: string, password: string): Promise<{user:IUserResponseDTO, token : string,refreshToken :string}> {
+      
+     
+      if(!email&&!password)throw new BAD_REQUEST_ERROR(ERROR_MESSAGES.USER.EMAIL_AND_PASSWORD_EMPTY_ERROR)
+      if(!email)throw new BAD_REQUEST_ERROR(ERROR_MESSAGES.USER.EMAIL_EMPTY_ERROR);
+      if(!password)throw new BAD_REQUEST_ERROR(ERROR_MESSAGES.USER.PASSWORD_EMPTY_ERROR);
+
 
       const user = await this._userRepository.findByEmail(email);
       if(!user) throw new NOT_FOUND_ERROR(ERROR_MESSAGES.USER.NOT_FOUND);
@@ -47,5 +53,13 @@ export class AuthService implements IAuthService {
        refreshToken 
     }
     
-  }
+   }
+   async getUserById(userId :string): Promise<IUserResponseDTO> {
+
+      const userEntity = await this._userRepository.findById(userId);
+      if(!userEntity)throw new NOT_FOUND_ERROR(ERROR_MESSAGES.USER.NOT_FOUND);
+   
+   return this._userMapper.toResponseDTO(userEntity);
+
+   }
 }

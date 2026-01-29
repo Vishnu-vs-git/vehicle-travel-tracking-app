@@ -4,13 +4,25 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import Dashboard from "./pages/Dashboard"
 import Register from "./pages/Register"
 import TripDetails from "./pages/TripDetails"
+import { Toaster } from "sonner"
+import PublicRoute from "./components/trips/PublicRoute"
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login/>} />
-         <Route path="/register" element={<Register />} />
+        <Route path="/" element={
+          <PublicRoute>
+
+            <Login/>
+          </PublicRoute>
+          } />
+         <Route path="/register" element={
+           <PublicRoute>
+
+             <Register />
+           </PublicRoute>
+          } />
         <Route path="/dashboard"
           element={
             <ProtectedRoute>
@@ -26,6 +38,7 @@ const App = () => {
           }
           />
       </Routes>
+      <Toaster richColors position="top-right" />
     </BrowserRouter>
   )
 }

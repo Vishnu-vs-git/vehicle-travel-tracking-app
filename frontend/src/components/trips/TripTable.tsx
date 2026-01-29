@@ -13,7 +13,7 @@ const TripTable = ({ points, trip }: Props) => {
   const [page, setPage] = useState(1);
   useEffect(() => {
     const fetch = async () => {
-     console.log("points",points);
+     
       setPage(1);
     }
     fetch();

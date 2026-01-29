@@ -1,3 +1,4 @@
+
 import { IUserRegisterDTO } from "../../dtos/userRegisterDto";
 import { IUserResponseDTO } from "../../dtos/userResponseDTO";
 import { User } from "../../types/userTypes";
@@ -10,7 +11,7 @@ export class UserMapper implements IUserMapper {
         email: data.email,
         password : data.password
       })
-  };
+  }
   toResponseDTO(data: User): IUserResponseDTO {
       return {
          id : data.id!,

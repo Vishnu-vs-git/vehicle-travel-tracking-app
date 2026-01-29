@@ -3,11 +3,13 @@ import { ZodError } from "zod";
 import { registerSchema } from "../validation/schemas/authSchema";
 import { AuthService } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface FormErrors {
   name?: string;
   email?: string;
   password?: string;
+  confirmPassword?: string;
 }
 
 const Register = () => {
@@ -16,7 +18,8 @@ const Register = () => {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
+    confirmPassword:""
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -34,7 +37,8 @@ const Register = () => {
 
       setLoading(true);
       await AuthService.register(form);
-      navigate("/dashboard");
+       toast.success("User Registration Successful!! Please Login")
+      navigate("/");
     } catch (error) {
       if (error instanceof ZodError) {
         const fieldErrors: FormErrors = {};
@@ -132,6 +136,28 @@ const Register = () => {
               </p>
             )}
           </div>
+          {/* Confirm Password */}
+<div>
+  <label className="block text-sm text-slate-300 mb-1">
+    Confirm Password
+  </label>
+  <input
+    name="confirmPassword"
+    type="password"
+    placeholder="••••••••"
+    value={form.confirmPassword}
+    onChange={handleChange}
+    className={`w-full px-4 py-2 rounded-lg bg-slate-900 text-white border ${
+      errors.confirmPassword ? "border-red-500" : "border-slate-700"
+    } focus:outline-none focus:ring-2 focus:ring-cyan-400 transition`}
+  />
+  {errors.confirmPassword && (
+    <p className="text-red-400 text-xs mt-1">
+      {errors.confirmPassword}
+    </p>
+  )}
+</div>
+
 
           {/* Button */}
           <button

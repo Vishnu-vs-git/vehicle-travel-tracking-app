@@ -4,4 +4,5 @@ import { IUserResponseDTO } from "../../dtos/userResponseDTO";
 export interface IAuthService {
   register(dto : IUserRegisterDTO): Promise<void>;
   login(email:string,password:string): Promise<{user:IUserResponseDTO, token : string,refreshToken :string}>;
+  getUserById(userId :string): Promise<IUserResponseDTO>
 }

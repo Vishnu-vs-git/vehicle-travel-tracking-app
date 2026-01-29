@@ -5,6 +5,11 @@ import Swal from "sweetalert2";
 interface UploadSectionProps {
   onUploadSuccess: () => void;
 }
+const CSV_MIME_TYPES = [
+  "text/csv",
+  "application/vnd.ms-excel",
+];
+
 
 const UploadSection = ({ onUploadSuccess }: UploadSectionProps) => {
   const [fileName, setFileName] = useState<string | null>(null);
@@ -14,12 +19,26 @@ const UploadSection = ({ onUploadSuccess }: UploadSectionProps) => {
     if (!e.target.files || e.target.files.length === 0) return;
 
     const file = e.target.files[0];
+    const isCsvExtension = file.name.toLowerCase().endsWith(".csv");
+    const isCsvMime = CSV_MIME_TYPES.includes(file.type);
+    
+    if (!isCsvExtension || !isCsvMime) {
+    Swal.fire({
+      icon: "error",
+      title: "Invalid file type",
+      text: "Please upload a valid CSV file only.",
+      confirmButtonText: "OK",
+    });
+
+    e.target.value = ""; // reset input
+    return;
+  }
     setFileName(file.name);
 
     try {
       setLoading(true);
 
-      // 👉 Uncomment when backend is ready
+      
        await TripService.uploadTrip(file);
         Swal.fire({
         title: 'Success!',

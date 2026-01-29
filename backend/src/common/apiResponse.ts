@@ -9,7 +9,7 @@ export class ApiResponse<T> {
   static success<T>(message: string,data?:T) {
     return new ApiResponse(true,message,data)
   }
-  static error<T>(message: string) {
+  static error(message: string) {
     return new ApiResponse(false,message)
   }
 }

@@ -6,6 +6,8 @@ import { SUCCESS_MESSAGES } from "../common/successMessages";
 import { CookieOptionsUtility } from "../utils/cookieOptionsUtility";
 import { COOKIE_NAMES } from "../enums/cookieTypes";
 import { AuthRequest } from "../types/auth-request";
+import { ERROR_MESSAGES } from "../common/errorMessages";
+
 
 
 
@@ -41,6 +43,17 @@ export class AuthController {
   }catch(err){
     next(err)
   }
+ }
+ async getUser(req: AuthRequest,res: Response,next:NextFunction): Promise<void> {
+    try{
+        const userId = req.userId;
+        if(!userId) res.status(StatusCode.UNAUTHORIZED).json(ApiResponse.error(ERROR_MESSAGES.USER.USER_UNAUTHORIZED));
+
+      const user = await this._authService.getUserById(userId!)
+     res.status(StatusCode.SUCCESS).json(ApiResponse.success(SUCCESS_MESSAGES.USER.USER_DATA_FETCH_SUCCESS,user))
+    }catch(err){
+       next(err)
+    }
  }
  async logout(req: AuthRequest, res :Response, next:NextFunction): Promise<void> {
     try{

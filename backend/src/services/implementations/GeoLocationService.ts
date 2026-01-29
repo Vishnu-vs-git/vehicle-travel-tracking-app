@@ -38,7 +38,7 @@ export class GeoLocationService implements IGeoLocationService {
         address?.state ||
         "Unknown"
       );
-    } catch (error) {
+    } catch  {
       
       return "Unknown";
     }

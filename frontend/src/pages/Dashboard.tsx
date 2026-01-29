@@ -8,13 +8,21 @@ import type { Trip } from "../types/tripTypes";
 import TripList from "../components/TripList";
 
 
+import { logout } from "../store/slices/authSlice";
+import { useAppDispatch } from "../store/hooks";
+import { toast } from "sonner";
+
+
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const [trips, setTrips] = useState<Trip[]>([]);
- 
+
+ const dispatch = useAppDispatch()
 
   const loadTrips = useCallback(async () => {
     try{
+       
       const response = await TripService.getTrips();
       setTrips(response.data.data);
     }catch(err){
@@ -27,7 +35,11 @@ const Dashboard = () => {
   const handleLogout = async () => {
     try {
       await AuthService.logout(); 
-      navigate("/");
+      dispatch(logout());
+      toast.info("User logout successful")
+     navigate("/", { replace: true });
+
+      
     } catch {
       navigate("/");
     }
@@ -45,6 +57,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       await loadTrips();
+      
     };
     fetchData();
   }, [loadTrips]);

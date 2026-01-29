@@ -1,37 +1,67 @@
 import { useState } from "react";
 import { AuthService } from "../services/authService";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import { AxiosError } from "axios";
+// import Swal from "sweetalert2";
+// import { AxiosError } from "axios";
+import { toast } from "sonner";
+
+import { loginSuccess } from "../store/slices/authSlice";
+import { useAppDispatch } from "../store/hooks";
+import { ZodError } from "zod";
+import { loginSchema } from "../validation/schemas/loginSchema";
+interface FormErrors {
+  email?: string;
+  password?: string;
+}
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+ const dispatch = useAppDispatch();
+ const [errors, setErrors] = useState<FormErrors>({});
+
+  
 
   const handleLogin = async () => {
     try {
+      setErrors({});
+       loginSchema.parse({ email, password });
       setLoading(true);
       const res = await AuthService.login({ email, password });
-         Swal.fire({
-    title: 'Success!',
-    text: res.data.message||"User login  successful",
-    icon: 'success',  
-    confirmButtonText: 'OK'
-  });
 
+      console.log("res is",res);
+      dispatch(loginSuccess(res.data.data));
    
       
-      navigate("/dashboard");
+  //        Swal.fire({
+  //   title: 'Success!',
+  //   text: res.data.message||"User login  successful",
+  //   icon: 'success',  
+  //   confirmButtonText: 'OK'
+  // });
+
+   toast.success(res.data.message)
+      
+      navigate("/dashboard",{replace:true});
     } catch(err) {
       console.log(err)
-       Swal.fire({
-      icon: "error",
-      title: "Login Failed",
-      text: err instanceof AxiosError?err.response?.data?.message : "Invalid email or password",
-      confirmButtonColor: "#06b6d4",
-    });
+
+      if (err instanceof ZodError) {
+      const fieldErrors: FormErrors = {};
+      err.issues.forEach((issue) => {
+        const field = issue.path[0] as keyof FormErrors;
+        fieldErrors[field] = issue.message;
+      });
+      setErrors(fieldErrors);
+    }
+    //    Swal.fire({
+    //   icon: "error",
+    //   title: "Login Failed",
+    //   text: err instanceof AxiosError?err.response?.data?.message : "Invalid email or password",
+    //   confirmButtonColor: "#06b6d4",
+    // });
     } finally {
       setLoading(false);
     }
@@ -68,6 +98,9 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 rounded-lg bg-slate-900 text-white border border-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
             />
+            {errors.email && (
+  <p className="text-red-400 text-xs mt-1">{errors.email}</p>
+)}
           </div>
 
           {/* Password */}
@@ -82,6 +115,9 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 rounded-lg bg-slate-900 text-white border border-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
             />
+            {errors.password && (
+  <p className="text-red-400 text-xs mt-1">{errors.password}</p>
+)}
           </div>
 
           {/* Login Button */}

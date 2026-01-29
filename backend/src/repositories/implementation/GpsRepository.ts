@@ -1,3 +1,4 @@
+
 import { IGpsFactory } from "../../factories/interface/IGpsFactory";
 import { GpsModel } from "../../models/gpsModel";
 import { GpsDbModel } from "../../types/dbtypes";
@@ -9,7 +10,7 @@ export class GpsRepository implements IGpsRepository {
     private _gpsFactory : IGpsFactory<GpsDbModel,Gps>
   ){}
   async  insertMany(GpsPoint: Gps[]): Promise<void> {
-      const docs = await GpsModel.insertMany(GpsPoint);
+       await GpsModel.insertMany(GpsPoint);
     
   }
   async findByTripId(tripId: string): Promise<Gps[]> {
