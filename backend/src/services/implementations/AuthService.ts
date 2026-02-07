@@ -15,6 +15,7 @@ export class AuthService implements IAuthService {
   ){}
 
   async register(dto: IUserRegisterDTO): Promise<void> {
+   
       const user = await this._userRepository.findByEmail(dto.email);
       if(user) throw new BAD_REQUEST_ERROR(ERROR_MESSAGES.USER.ALREADY_EXISTS);
     

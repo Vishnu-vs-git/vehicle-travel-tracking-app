@@ -29,8 +29,6 @@ export class AuthController {
         
       const { user,token,refreshToken } = await this._authService.login(req.body.email,req.body.password);
       
-        
-
        const authCookieOptions = CookieOptionsUtility.create(15 * 60 * 1000);
        res.cookie(COOKIE_NAMES.ACCESS_TOKEN, token, authCookieOptions);
 
