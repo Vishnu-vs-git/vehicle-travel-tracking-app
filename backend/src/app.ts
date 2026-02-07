@@ -7,6 +7,7 @@ import tripRoutes from"./routes/trip/tripRoutes"
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();
+app.set("trust proxy", 1);
 app.use(cors({
   origin :process.env.FRONT_END_URL,
   credentials: true
