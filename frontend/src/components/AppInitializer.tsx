@@ -12,7 +12,8 @@ const AppInitializer = ({ children }: { children: React.ReactNode }) => {
     const initAuth = async () => {
       try {
         const user = await AuthService.checkAuth();
-        dispatch(loginSuccess(user.data.user));
+       
+        dispatch(loginSuccess(user.data.data));
       } catch (err) {
         const message = err instanceof AxiosError ? err.response?.data?.message : "Something went wrong";
         toast.error(message)
