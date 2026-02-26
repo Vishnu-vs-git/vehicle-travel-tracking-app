@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 import { loginSuccess } from "../store/slices/authSlice";
 import { useAppDispatch } from "../store/hooks";
-import { ZodError } from "zod";
+// import { ZodError } from "zod";
 import { loginSchema } from "../validation/schemas/loginSchema";
 interface FormErrors {
   email?: string;
@@ -24,48 +24,39 @@ const Login = () => {
 
   
 
-  const handleLogin = async () => {
-    try {
-      setErrors({});
-       loginSchema.parse({ email, password });
-      setLoading(true);
-      const res = await AuthService.login({ email, password });
+ const handleLogin = async () => {
+  try {
+    setErrors({});
 
-      console.log("res is",res);
-      dispatch(loginSuccess(res.data.data));
-   
-      
-  //        Swal.fire({
-  //   title: 'Success!',
-  //   text: res.data.message||"User login  successful",
-  //   icon: 'success',  
-  //   confirmButtonText: 'OK'
-  // });
+    const result = loginSchema.safeParse({ email, password });
+    console.log("result is ",result)
 
-   toast.success(res.data.message)
-      
-      navigate("/dashboard",{replace:true});
-    } catch(err) {
-      console.log(err)
-
-      if (err instanceof ZodError) {
+    if (!result.success) {
       const fieldErrors: FormErrors = {};
-      err.issues.forEach((issue) => {
+
+      result.error.issues.forEach((issue) => {
         const field = issue.path[0] as keyof FormErrors;
         fieldErrors[field] = issue.message;
       });
+
       setErrors(fieldErrors);
+      return;
     }
-    //    Swal.fire({
-    //   icon: "error",
-    //   title: "Login Failed",
-    //   text: err instanceof AxiosError?err.response?.data?.message : "Invalid email or password",
-    //   confirmButtonColor: "#06b6d4",
-    // });
-    } finally {
-      setLoading(false);
-    }
-  };
+
+    setLoading(true);
+
+    const res = await AuthService.login({ email, password });
+
+    dispatch(loginSuccess(res.data.data));
+    toast.success(res.data.message);
+    navigate("/dashboard", { replace: true });
+
+  } catch (err) {
+    console.log(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-slate-800 to-black px-4">

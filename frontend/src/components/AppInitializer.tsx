@@ -3,7 +3,7 @@ import { AuthService } from "../services/authService";
 import { useAppDispatch } from "../store/hooks";
 import { loginSuccess, logout } from "../store/slices/authSlice";
 import { AxiosError } from "axios";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 
 const AppInitializer = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
@@ -16,7 +16,8 @@ const AppInitializer = ({ children }: { children: React.ReactNode }) => {
         dispatch(loginSuccess(user.data.data));
       } catch (err) {
         const message = err instanceof AxiosError ? err.response?.data?.message : "Something went wrong";
-        toast.error(message)
+      //  toast.error(message)
+        console.log(message)
         dispatch(logout());
       }
     };

@@ -2,34 +2,92 @@ import { z } from "zod";
 
 export const registerSchema = z
   .object({
-    name: z
-      .string()
-      .min(1, "Name is required")
-      .max(15, "Name must not exceed 15 characters")
-      .regex(
-        /^[A-Z][a-zA-Z ]*$/,
-        "Name must start with a capital letter and contain only alphabets and spaces"
-      ),
+    name: z.string().superRefine((val, ctx) => {
+      if (!val) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Name is required",
+        });
+        return;
+      }
 
-    email: z
-      .string()
-      .trim()
-      .email("Please enter a valid email address"),
+      if (val.length > 15) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Name must not exceed 15 characters",
+        });
+      }
 
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .max(15, "Password must not exceed 15 characters")
-      .regex(
-        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
-        "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character"
-      ),
+      if (!/^[A-Z][a-zA-Z ]*$/.test(val)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            "Name must start with a capital letter and contain only alphabets",
+        });
+      }
+    }),
 
-    confirmPassword: z
-      .string()
-      .min(1, "Confirm password is required"),
+    email: z.string().trim().superRefine((val, ctx) => {
+      if (!val) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Email is required",
+        });
+        return;
+      }
+
+      if (!/\S+@\S+\.\S+/.test(val)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Please enter a valid email address",
+        });
+      }
+    }),
+
+    password: z.string().superRefine((val, ctx) => {
+      if (!val) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Password is required",
+        });
+        return;
+      }
+
+      if (val.length < 8) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Password must be at least 8 characters",
+        });
+      }
+
+      if (val.length > 15) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Password must not exceed 15 characters",
+        });
+      }
+
+      if (
+        !/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/.test(val)
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            "Password must include uppercase, lowercase, number & special character",
+        });
+      }
+    }),
+
+    confirmPassword: z.string().superRefine((val, ctx) => {
+      if (!val) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Confirm password is required",
+        });
+      }
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
-    path: ["confirmPassword"], 
+    path: ["confirmPassword"],
   });

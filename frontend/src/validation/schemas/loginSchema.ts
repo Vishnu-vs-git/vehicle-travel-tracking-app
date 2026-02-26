@@ -4,14 +4,49 @@ export const loginSchema = z.object({
   email: z
     .string()
     .trim()
-    .email("Please enter a valid email address"),
+    .superRefine((val, ctx) => {
+      if (!val) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Email is required",
+        });
+        return;
+      }
+
+      if (!/\S+@\S+\.\S+/.test(val)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Please enter a valid email address",
+        });
+      }
+    }),
 
   password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .max(15, "Password must not exceed 15 characters")
-      .regex(
-        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
-        "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character"
-      ),
+    .string()
+    .superRefine((val, ctx) => {
+      if (!val) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Password is required",
+        });
+        return;
+      }
+
+      if (val.length < 8) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Password must be at least 8 characters",
+        });
+      }
+
+      if (
+        !/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/.test(val)
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            "Password must include uppercase, lowercase, number & special character",
+        });
+      }
+    }),
 });
