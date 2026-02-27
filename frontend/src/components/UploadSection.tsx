@@ -47,8 +47,11 @@ const UploadSection = ({ onUploadSuccess }: UploadSectionProps) => {
         confirmButtonText: 'OK'
       });
       onUploadSuccess();
+      
     } finally {
       setLoading(false);
+      e.target.value = "";     // Reset file input
+    setFileName(null); 
     }
   };
 
